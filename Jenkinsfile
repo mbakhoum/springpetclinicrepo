@@ -30,7 +30,6 @@ pipeline {
           echo "Now Archiving."
           archiveArtifacts artifacts: '**/*.jar'          
         }
-      }
         container('UploadArtifact') {
                 nexusArtifactUploader(
                   nexusVersion: 'nexus3',
@@ -50,4 +49,5 @@ pipeline {
             }
         }
     }
+  }
 }
