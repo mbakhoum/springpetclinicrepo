@@ -24,7 +24,7 @@ pipeline {
         NEXUS_PROTOCOL = "http"
         NEXUS_USER = 'admin'
 		    NEXUS_PASS = 'nexus123'
-		    NEXUS_URL = '34.144.203.236/service/rest/repository/browse/'
+		    NEXUS_URL = '34.144.203.236/service/rest'
 		    NEXUS_CREDENTIAL_ID = 'nexuslogin'
         NEXUS_REPOSITORY = 'artifactrepo'
     }
