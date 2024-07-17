@@ -11,6 +11,11 @@ pipeline {
             command:
             - cat
             tty: true
+          - name: node
+            image: node:16-alpine3.12
+            command:
+            - cat
+            tty: true
         '''
     }
   }
@@ -31,6 +36,7 @@ pipeline {
           archiveArtifacts artifacts: '**/*.jar'          
         }
         container('UploadArtifact') {
+          script {
                 nexusArtifactUploader(
                   nexusVersion: 'nexus3',
                   protocol: 'http',
@@ -47,6 +53,7 @@ pipeline {
                   ]
                 )
             }
+          }  
         }
     }
   }
