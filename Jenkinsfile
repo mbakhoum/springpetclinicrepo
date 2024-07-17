@@ -20,11 +20,13 @@ pipeline {
     }
   }
   environment {
+        NEXUS_VERSION = "nexus3"
+        NEXUS_PROTOCOL = "http"
         NEXUS_USER = 'admin'
-		NEXUS_PASS = 'nexus123'
-		NEXUSIP = '34.144.203.236'
-		NEXUS_LOGIN = 'nexuslogin'
-        RELEASE_REPO = 'artifactrepo'
+		    NEXUS_PASS = 'nexus123'
+		    NEXUS_URL = '34.144.203.236'
+		    NEXUS_CREDENTIAL_ID = 'nexuslogin'
+        NEXUS_REPOSITORY = 'artifactrepo'
     }
   stages {
     stage('Run maven') {
@@ -34,23 +36,43 @@ pipeline {
           sh 'mvn -s pom.xml -DskipTests clean install'
           echo "Now Archiving."
           archiveArtifacts artifacts: '**/*.jar'
-          nexusArtifactUploader(
-                  nexusVersion: 'nexus3',
-                  protocol: 'http',
-                  nexusUrl: "${NEXUSIP}",
-                  groupId: 'QA',
-                  version: "${env.BUILD_ID}-${env.BUILD_TIMESTAMP}",
-                  repository: "${RELEASE_REPO}",
-                  credentialsId: "${NEXUS_LOGIN}",
-                  artifacts: [
-                    [artifactId: 'springpetclinic',
-                     classifier: '',
-                     file: 'target/*.jar',
-                     type: 'jar']
-                  ]
-                )          
-        } 
         }
+        container('jnlp'){
+          script {
+            pom = readMavenPom file: "pom.xml";
+            filesByGlob = findFiles(glob: "target/*.${pom.packaging}"); 
+            echo "${filesByGlob[0].name} ${filesByGlob[0].path} ${filesByGlob[0].directory} ${filesByGlob[0].length} ${filesByGlob[0].lastModified}"
+            artifactPath = filesByGlob[0].path;
+            artifactExists = fileExists artifactPath;
+            if(artifactExists) {
+                echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${pom.version}";
+                nexusArtifactUploader(
+                    nexusVersion: NEXUS_VERSION,
+                    protocol: NEXUS_PROTOCOL,
+                    nexusUrl: NEXUS_URL,
+                    groupId: pom.groupId,
+                    version: pom.version,
+                    repository: NEXUS_REPOSITORY,
+                    credentialsId: NEXUS_CREDENTIAL_ID,
+                    artifacts: [
+                        [artifactId: pom.artifactId,
+                        classifier: '',
+                        file: artifactPath,
+                        type: pom.packaging],
+
+                        [artifactId: pom.artifactId,
+                        classifier: '',
+                        file: "pom.xml",
+                        type: "pom"]
+                    ]
+                );
+
+            } else {
+                error "*** File: ${artifactPath}, could not be found";
+            }
+          }
+        }      
+      } 
     }
   }
 }
