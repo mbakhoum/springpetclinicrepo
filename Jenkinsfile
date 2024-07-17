@@ -36,8 +36,6 @@ pipeline {
           sh 'mvn -s pom.xml -DskipTests clean install'
           echo "Now Archiving."
           archiveArtifacts artifacts: '**/*.jar'
-        }
-        container('jnlp'){
           script {
             pom = readMavenPom file: "pom.xml";
             filesByGlob = findFiles(glob: "target/*.${pom.packaging}"); 
