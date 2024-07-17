@@ -32,5 +32,24 @@ pipeline {
         }
       }
     }
-  }
+    stage("UploadArtifact"){
+            steps{
+                nexusArtifactUploader(
+                  nexusVersion: 'nexus3',
+                  protocol: 'http',
+                  nexusUrl: "${NEXUSIP}",
+                  groupId: 'QA',
+                  version: "${env.BUILD_ID}-${env.BUILD_TIMESTAMP}",
+                  repository: "${RELEASE_REPO}",
+                  credentialsId: "${NEXUS_LOGIN}",
+                  artifacts: [
+                    [artifactId: 'springpetclinic',
+                     classifier: '',
+                     file: 'target/*.jar',
+                     type: 'war']
+                  ]
+                )
+            }
+        }
+    }
 }
