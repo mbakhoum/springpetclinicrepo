@@ -19,7 +19,7 @@ pipeline {
       steps {
         container('maven') {
           sh 'mvn -version'
-          sh 'sleep 90'
+          sh 'mvn clean install'
         }
       }
     }
