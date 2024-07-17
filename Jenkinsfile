@@ -31,7 +31,6 @@ pipeline {
           archiveArtifacts artifacts: '**/*.jar'          
         }
       }
-    }
         container('UploadArtifact') {
                 nexusArtifactUploader(
                   nexusVersion: 'nexus3',
@@ -51,3 +50,4 @@ pipeline {
             }
         }
     }
+}
