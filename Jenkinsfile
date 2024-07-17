@@ -20,6 +20,8 @@ pipeline {
         container('maven') {
           sh 'mvn -version'
           sh 'mvn -s pom.xml -DskipTests clean install'
+          echo "Now Archiving."
+          archiveArtifacts artifacts: '**/*.war'
         }
       }
     }
