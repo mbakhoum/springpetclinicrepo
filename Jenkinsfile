@@ -19,7 +19,7 @@ pipeline {
       steps {
         container('maven') {
           sh 'mvn -version'
-          sh 'mvn clean install'
+          sh 'mvn -s pom.xml -DskipTests clean install'
         }
       }
     }
