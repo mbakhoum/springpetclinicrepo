@@ -33,11 +33,8 @@ pipeline {
           sh 'mvn -version'
           sh 'mvn -s pom.xml -DskipTests clean install'
           echo "Now Archiving."
-          archiveArtifacts artifacts: '**/*.jar'          
-        }
-        container('UploadArtifact') {
-          script {
-                nexusArtifactUploader(
+          archiveArtifacts artifacts: '**/*.jar'
+          nexusArtifactUploader(
                   nexusVersion: 'nexus3',
                   protocol: 'http',
                   nexusUrl: "${NEXUSIP}",
@@ -48,12 +45,11 @@ pipeline {
                   artifacts: [
                     [artifactId: 'springpetclinic',
                      classifier: '',
-                     file: '**/*.jar',
+                     file: 'target/*.jar',
                      type: 'jar']
                   ]
-                )
-            }
-          }  
+                )          
+        } 
         }
     }
   }
