@@ -7,7 +7,7 @@ pipeline {
         spec:
           containers:
           - name: maven
-            image: maven:alpine
+            image: maven:latest
             command:
             - cat
             tty: true
