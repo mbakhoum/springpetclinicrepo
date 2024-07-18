@@ -14,6 +14,14 @@ pipeline {
         '''
     }
   }
+  environment {
+    NEXUS_VERSION = "nexus3"
+    NEXUS_PROTOCOL = "http"
+    NEXUS_URL = "34.144.203.236:8081"
+    NEXUS_REPOSITORY = "artifactrepo"
+    NEXUS_CREDENTIAL_ID = "nexuslogin"
+    APP_NAME = "spring-petclinic"
+  }
   stages {
     stage('Run maven') {
       steps {
