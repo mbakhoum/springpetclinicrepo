@@ -410,7 +410,7 @@
                     <pluginExecution>
                       <pluginExecutionFilter>
                         <groupId>org.springframework.boot</groupId>
-                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <artifactId>spring-boot-maven-plugin:2.6.3:run</artifactId>
                         <versionRange>[1,)</versionRange>
                         <goals>
                           <goal>build-info</goal>
