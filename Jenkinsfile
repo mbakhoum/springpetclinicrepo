@@ -23,7 +23,7 @@ pipeline {
     APP_NAME = "spring-petclinic"
   }
   stages {
-    stage('Run maven') {
+    stage('Build Code Upload Artifact') {
       steps {
         container('maven') {
           sh 'mvn -version'
@@ -43,7 +43,7 @@ pipeline {
                     protocol: NEXUS_PROTOCOL,
                     nexusUrl: NEXUS_URL,
                     groupId: pom.groupId,
-                    version: pom.version,
+                    version: "${env.BUILD_ID}-${env.BUILD_TIMESTAMP}",
                     repository: NEXUS_REPOSITORY,
                     credentialsId: NEXUS_CREDENTIAL_ID,
                     artifacts: [
