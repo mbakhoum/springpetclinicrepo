@@ -11,26 +11,6 @@ pipeline {
             command:
             - cat
             tty: true
-          - name: kaniko
-            image: gcr.io/kaniko-project/executor:v1.6.0-debug
-            imagePullPolicy: Always
-            command:
-            - sleep
-            args:
-            - 99d
-            tty: true
-            volumeMounts:
-              - name: jenkins-docker-cfg
-                mountPath: /kaniko/.docker
-          volumes:
-          - name: jenkins-docker-cfg
-            projected:
-              sources:
-              - secret:
-                  name: kaniko-secret
-                  items:
-                    - key: .dockerconfigjson
-                      path: config.json
         '''
     }
   }
@@ -41,12 +21,9 @@ pipeline {
     NEXUS_REPOSITORY = "artifactrepo"
     NEXUS_CREDENTIAL_ID = "nexuslogin"
     APP_NAME = "spring-petclinic"
-    IMAGE_REPO = "dockerrepo"
-    IMAGENAME = "V${env.BUILD_ID}"
-    TAG = "${env.BUILD_TIMESTAMP}"
   }
   stages {
-    stage('Build Code Upload Artifact') {
+    stage('Run maven') {
       steps {
         container('maven') {
           sh 'mvn -version'
@@ -66,7 +43,7 @@ pipeline {
                     protocol: NEXUS_PROTOCOL,
                     nexusUrl: NEXUS_URL,
                     groupId: pom.groupId,
-                    version: "${env.BUILD_ID}-${env.BUILD_TIMESTAMP}",
+                    version: pom.version,
                     repository: NEXUS_REPOSITORY,
                     credentialsId: NEXUS_CREDENTIAL_ID,
                     artifacts: [
@@ -84,10 +61,6 @@ pipeline {
                 error "*** File: ${artifactPath}, could not be found";
             }
           }
-        }
-
-        container('kaniko') {
-        sh "/kaniko/executor -f $WORKSPACE/dockerfile -c $WORKSPACE/ --insecure --skip-tls-verify --cache=true --destination=${IMAGE_REPO}/docker/${IMAGENAME}:${TAG}"
         }
       }
     }
