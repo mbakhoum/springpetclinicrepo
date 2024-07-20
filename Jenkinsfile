@@ -25,9 +25,6 @@ pipeline {
               sources:
               - secret:
                   name: kaniko-secret
-                  items:
-                    - key: .dockerconfigjson
-                      path: config.json
         '''
     }
   }
