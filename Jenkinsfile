@@ -83,7 +83,7 @@ pipeline {
         container('kaniko') {
           sh "ls $WORKSPACE"
           sleep 900
-          sh "/kaniko/executor --dockerfile $WORKSPACE/Dockerfile -c $WORKSPACE/ --insecure --skip-tls-verify --cache=true --destination=${IMAGE_REPO}/docker/${IMAGENAME}:${TAG}"
+          sh "/kaniko/executor --dockerfile $WORKSPACE/dockerfile -c $WORKSPACE/ --insecure --skip-tls-verify --cache=true --destination=${IMAGE_REPO}/docker/${IMAGENAME}:${TAG}"
         }
       }
     }
