@@ -15,9 +15,7 @@ pipeline {
             image: gcr.io/kaniko-project/executor:v1.6.0-debug
             imagePullPolicy: Always
             command:
-            - sleep
-            args:
-            - 99d
+            - cat
             tty: true
             volumeMounts:
               - name: jenkins-docker-cfg
