@@ -15,8 +15,8 @@ pipeline {
             image: gcr.io/kaniko-project/executor:v1.6.0-debug
             command:
             - cat
+            - sleep 100
             tty: true
-            sleep 100
             volumeMounts:
               - name: jenkins-docker-cfg
                 mountPath: /kaniko/.docker
