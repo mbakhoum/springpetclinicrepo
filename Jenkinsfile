@@ -15,7 +15,6 @@ pipeline {
             image: gcr.io/kaniko-project/executor:v1.6.0-debug
             command:
             - cat
-            - sleep 100
             tty: true
             volumeMounts:
               - name: jenkins-docker-cfg
@@ -82,6 +81,7 @@ pipeline {
         }
 
         container('kaniko') {
+          sleep 90
           sh "/kaniko/executor -f $WORKSPACE/dockerfile -c $WORKSPACE/ --insecure --skip-tls-verify --cache=true --destination=${IMAGE_REPO}/docker/${IMAGENAME}:${TAG}"
         }
       }
