@@ -13,7 +13,6 @@ pipeline {
             tty: true
           - name: kaniko
             image: gcr.io/kaniko-project/executor:v1.6.0-debug
-            imagePullPolicy: Always
             command:
             - cat
             tty: true
