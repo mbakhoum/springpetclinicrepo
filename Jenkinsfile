@@ -81,6 +81,7 @@ pipeline {
         }
 
         container('kaniko') {
+          ls
           sleep 90
           sh "/kaniko/executor --dockerfile $WORKSPACE/Dockerfile -c $WORKSPACE/ --insecure --skip-tls-verify --cache=true --destination=${IMAGE_REPO}/docker/${IMAGENAME}:${TAG}"
         }
