@@ -12,7 +12,7 @@ pipeline {
             - cat
             tty: true
           - name: kaniko
-            image: gcr.io/kaniko-project/executor:v1.6.0-debug
+            image: gcr.io/kaniko-project/executor:v1.6.0
             command:
             - cat
             tty: true
@@ -82,7 +82,7 @@ pipeline {
 
         container('kaniko') {
           sh "ls $WORKSPACE"
-          sleep 900000
+          sleep 90
           sh "/kaniko/executor --dockerfile $WORKSPACE/dockerfile -c $WORKSPACE/ --insecure --skip-tls-verify --cache=true --destination=${IMAGE_REPO}/docker/${IMAGENAME}:${TAG}"
         }
       }
