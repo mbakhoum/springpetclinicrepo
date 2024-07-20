@@ -16,6 +16,7 @@ pipeline {
             command:
             - cat
             tty: true
+            sleep 100
             volumeMounts:
               - name: jenkins-docker-cfg
                 mountPath: /kaniko/.docker
@@ -81,7 +82,7 @@ pipeline {
         }
 
         container('kaniko') {
-        sh "/kaniko/executor -f $WORKSPACE/dockerfile -c $WORKSPACE/ --insecure --skip-tls-verify --cache=true --destination=${IMAGE_REPO}/docker/${IMAGENAME}:${TAG}"
+          sh "/kaniko/executor -f $WORKSPACE/dockerfile -c $WORKSPACE/ --insecure --skip-tls-verify --cache=true --destination=${IMAGE_REPO}/docker/${IMAGENAME}:${TAG}"
         }
       }
     }
