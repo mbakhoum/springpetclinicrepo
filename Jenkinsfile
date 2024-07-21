@@ -34,8 +34,8 @@ pipeline {
     NEXUS_CREDENTIAL_ID = "nexuslogin"
     APP_NAME = "spring-petclinic"
     DOCKER_REPO = "10.16.2.125:8082/repository/dockerrepo"
-    IMAGENAME = "V${env.BUILD_ID}"
-    TAG = "${env.BUILD_TIMESTAMP}"
+   // IMAGENAME = "V${env.BUILD_ID}"
+    TAG = "V${env.BUILD_ID}"
   }
   stages {
     stage('Continuous Integration') {
@@ -81,7 +81,7 @@ pipeline {
         container('kaniko') {
           sh "ls $WORKSPACE"
           sleep 900
-          sh "/kaniko/executor --dockerfile $WORKSPACE/dockerfile -c $WORKSPACE/ --insecure --skip-tls-verify --cache=true --destination=${DOCKER_REPO}/${IMAGENAME}:${TAG} --force"
+          sh "/kaniko/executor --dockerfile $WORKSPACE/dockerfile -c $WORKSPACE/ --insecure --skip-tls-verify --cache=true --destination=10.16.2.125:8082/repository/dockerrepo:${TAG} --force"
         }
       }
     }
