@@ -1,4 +1,4 @@
-FROM jenkins/jenkins:jdk17-preview 
+FROM jenkins/jenkins:jdk17-preview
 RUN  mkdir /Spring-Project
 COPY  . /Spring-Project
 RUN  /Spring-Project/mvnw package
