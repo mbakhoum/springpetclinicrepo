@@ -82,8 +82,8 @@ pipeline {
 
         container('kaniko') {
           sh "ls $WORKSPACE"
-          sleep 90
-          sh "/kaniko/executor --dockerfile $WORKSPACE/dockerfile -c $WORKSPACE/ --insecure --skip-tls-verify --cache=true --destination=${IMAGE_REPO}/docker/${IMAGENAME}:${TAG}"
+          sleep 900
+          sh "/kaniko/executor --dockerfile $WORKSPACE/dockerfile -c $WORKSPACE/ --insecure --skip-tls-verify --cache=true --destination 10.16.2.22:8082/repository/dockerrepo/image-name:tag-name --build-arg NEXUS_USERNAME=admin --build-arg NEXUS_PASSWORD=nexus123"
         }
       }
     }
