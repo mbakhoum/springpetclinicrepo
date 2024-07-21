@@ -80,7 +80,7 @@ pipeline {
 
         container('kaniko') {
           sh "ls $WORKSPACE"
-          sleep 900
+          sleep 9000
           sh "/kaniko/executor --dockerfile $WORKSPACE/dockerfile -c $WORKSPACE/ --insecure --skip-tls-verify --cache=true --destination 10.16.2.22:8082/repository/dockerrepo/testimage:tag"
         }
       }
