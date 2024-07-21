@@ -33,12 +33,12 @@ pipeline {
     NEXUS_REPOSITORY = "artifactrepo"
     NEXUS_CREDENTIAL_ID = "nexuslogin"
     APP_NAME = "spring-petclinic"
-    IMAGE_REPO = "dockerrepo"
+    DOCKER_REPO = "10.16.2.22:8082/repository/dockerrepo/"
     IMAGENAME = "V${env.BUILD_ID}"
     TAG = "${env.BUILD_TIMESTAMP}"
   }
   stages {
-    stage('Build Code Upload Artifact') {
+    stage('Continuous Integration') {
       steps {
         container('maven') {
           sh 'mvn -version'
@@ -80,8 +80,8 @@ pipeline {
 
         container('kaniko') {
           sh "ls $WORKSPACE"
-          sleep 9000
-          sh "/kaniko/executor --dockerfile $WORKSPACE/dockerfile -c $WORKSPACE/ --insecure --skip-tls-verify --cache=true --destination 10.16.2.22:8082/repository/dockerrepo/testimage:tag"
+    //    sleep 9000
+          sh "/kaniko/executor --dockerfile $WORKSPACE/dockerfile -c $WORKSPACE/ --insecure --skip-tls-verify --cache=true --destination $DOCKER_REPO/$IMAGENAME:$TAG"
         }
       }
     }
