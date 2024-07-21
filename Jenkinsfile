@@ -29,11 +29,11 @@ pipeline {
   environment {
     NEXUS_VERSION = "nexus3"
     NEXUS_PROTOCOL = "http"
-    NEXUS_URL = "10.16.2.22:8081"
+    NEXUS_URL = "10.16.2.125:8081"
     NEXUS_REPOSITORY = "artifactrepo"
     NEXUS_CREDENTIAL_ID = "nexuslogin"
     APP_NAME = "spring-petclinic"
-    DOCKER_REPO = "10.16.2.22:8082/repository/dockerrepo"
+    DOCKER_REPO = "10.16.2.125:8082/repository/dockerrepo"
     IMAGENAME = "V${env.BUILD_ID}"
     TAG = "${env.BUILD_TIMESTAMP}"
   }
