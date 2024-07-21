@@ -33,7 +33,7 @@ pipeline {
     NEXUS_REPOSITORY = "artifactrepo"
     NEXUS_CREDENTIAL_ID = "nexuslogin"
     APP_NAME = "spring-petclinic"
-    DOCKER_REPO = "10.16.2.22:8082/repository/dockerrepo/"
+    DOCKER_REPO = "10.16.2.22:8082/repository/dockerrepo"
     IMAGENAME = "V${env.BUILD_ID}"
     TAG = "${env.BUILD_TIMESTAMP}"
   }
