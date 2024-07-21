@@ -16,11 +16,9 @@ pipeline {
             command:
             - cat
             tty: true
-            args: ["--dockerfile=$WORKSPACE/dockerfile", "--destination=10.16.2.22:8082/repository/dockerrepo/testimage:tag"]
             volumeMounts:
               - name: jenkins-docker-cfg
                 mountPath: /kaniko/.docker
-                readOnly: true
           volumes:
           - name: jenkins-docker-cfg
             secret:
