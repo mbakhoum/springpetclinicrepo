@@ -12,19 +12,19 @@ pipeline {
             - cat
             tty: true
           - name: kaniko
-            image: gcr.io/kaniko-project/executor:v1.6.0-debug
+            image: gcr.io/kaniko-project/executor:latest
             command:
             - cat
             tty: true
+            args: ["--dockerfile=$WORKSPACE/dockerfile", "--destination=10.16.2.22:8082/repository/dockerrepo/testimage:tag"]
             volumeMounts:
               - name: jenkins-docker-cfg
                 mountPath: /kaniko/.docker
+                readOnly: true
           volumes:
           - name: jenkins-docker-cfg
-            projected:
-              sources:
-              - secret:
-                  name: kaniko-secret
+            secret:
+              secretName: kaniko-secret
         '''
     }
   }
@@ -83,7 +83,7 @@ pipeline {
         container('kaniko') {
           sh "ls $WORKSPACE"
           sleep 900
-          sh "/kaniko/executor --dockerfile $WORKSPACE/dockerfile -c $WORKSPACE/ --insecure --skip-tls-verify --cache=true --destination 10.16.2.22:8082/repository/dockerrepo/image-name:tag-name --build-arg NEXUS_USERNAME=admin --build-arg NEXUS_PASSWORD=nexus123"
+          sh "/kaniko/executor --dockerfile $WORKSPACE/dockerfile -c $WORKSPACE/ --insecure --skip-tls-verify --cache=true --destination 10.16.2.22:8082/repository/dockerrepo/testimage:tag"
         }
       }
     }
