@@ -27,6 +27,9 @@ pipeline {
         '''
     }
   }
+  options {
+    ansiColor('xterm')
+  }
   environment {
     NEXUS_VERSION = "nexus3"
     NEXUS_PROTOCOL = "http"
