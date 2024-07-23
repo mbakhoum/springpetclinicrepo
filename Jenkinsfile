@@ -19,6 +19,11 @@ pipeline {
             volumeMounts:
               - name: jenkins-docker-cfg
                 mountPath: /kaniko/.docker
+          - name: alpine
+            image: alpine:latest
+            command:
+            - cat
+            tty: true
           volumes:
           - name: jenkins-docker-cfg
             secret:
@@ -36,10 +41,13 @@ pipeline {
     NEXUS_URL = "10.16.2.125:8081"
     NEXUS_REPOSITORY = "artifactrepo"
     NEXUS_CREDENTIAL_ID = "nexuslogin"
-    APP_NAME = "spring-petclinic"
+    NEXUS_USERNAME = "admin"
+    NEXUS_PASSWORD = "nexus123"
+    //APP_NAME = "spring-petclinic"
     DOCKER_REPO = "10.16.2.125:8082/repository/dockerrepo"
-   // IMAGENAME = "V${env.BUILD_ID}"
+    IMAGE_NAME = "spring-petclinic"
     TAG = "V${env.BUILD_ID}"
+    OUTPUT_FILE = ""
   }
   stages {
     stage('Continuous Integration') {
@@ -85,9 +93,21 @@ pipeline {
         container('kaniko') {
           sh "ls $WORKSPACE"
          // sleep 900
-          sh "/kaniko/executor --dockerfile $WORKSPACE/dockerfile -c $WORKSPACE/ --insecure --skip-tls-verify --cache=true --destination=${DOCKER_REPO}:${TAG} --force"
+          sh "/kaniko/executor --dockerfile $WORKSPACE/dockerfile -c $WORKSPACE/ --insecure --skip-tls-verify --cache=true --destination=${DOCKER_REPO}/${IMAGE_NAME}:${TAG} --force"
         }
       }
     }
+
+//    stage('Continuous Deployment') {
+//      steps {
+//        container('apline') {
+//          sh """
+//          curl -u ${NEXUS_USERNAME}:${NEXUS_PASSWORD} ${DOCKER_REPO}:${TAG}  -o ${OUTPUT_FILE} 
+//          
+//          kubectl set image deployment/${GCR_IMAGE_NAME} ${GCR_IMAGE_NAME}=gcr.io/${GCP_PROJECT_ID}/${GCR_IMAGE_NAME}:${GCR_IMAGE_TAG} -n ${KUBE_NAMESPACE}
+//          """
+//        }
+//      }
+//    }  
   }
 }
