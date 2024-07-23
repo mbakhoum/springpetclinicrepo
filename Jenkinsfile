@@ -102,7 +102,7 @@ pipeline {
 
     stage('Continuous Deployment') {
       steps {
-        container('apline') {
+        container('alpine') {
           sh """
           curl -u ${NEXUS_USERNAME}:${NEXUS_PASSWORD} ${DOCKER_REPO}:${TAG}  -o ${OUTPUT_FILE} 
          
