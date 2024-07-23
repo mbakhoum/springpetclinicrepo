@@ -47,7 +47,9 @@ pipeline {
     DOCKER_REPO = "10.16.2.125:8082/repository/dockerrepo"
     IMAGE_NAME = "spring-petclinic"
     TAG = "V${env.BUILD_ID}"
-    OUTPUT_FILE = ""
+    OUTPUT_FILE = "pulledimage" 
+    PROJECT_ID = "cicd-javaapp"
+    KUBE_NAMESPACE = "app-tst"
   }
   stages {
     stage('Continuous Integration') {
@@ -98,16 +100,16 @@ pipeline {
       }
     }
 
-//    stage('Continuous Deployment') {
-//      steps {
-//        container('apline') {
-//          sh """
-//          curl -u ${NEXUS_USERNAME}:${NEXUS_PASSWORD} ${DOCKER_REPO}:${TAG}  -o ${OUTPUT_FILE} 
-//          
-//          kubectl set image deployment/${GCR_IMAGE_NAME} ${GCR_IMAGE_NAME}=gcr.io/${GCP_PROJECT_ID}/${GCR_IMAGE_NAME}:${GCR_IMAGE_TAG} -n ${KUBE_NAMESPACE}
-//          """
-//        }
-//      }
-//    }  
+    stage('Continuous Deployment') {
+      steps {
+        container('apline') {
+          sh """
+          curl -u ${NEXUS_USERNAME}:${NEXUS_PASSWORD} ${DOCKER_REPO}:${TAG}  -o ${OUTPUT_FILE} 
+         
+          kubectl set image deployment/${IMAGE_NAME} ${IMAGE_NAME}=gcr.io/${PROJECT_ID}/${IMAGE_NAME}:${TAG} -n ${KUBE_NAMESPACE}
+          """
+        }
+      }
+    }  
   }
 }
