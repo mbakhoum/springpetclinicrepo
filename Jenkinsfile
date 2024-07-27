@@ -19,8 +19,8 @@ pipeline {
             volumeMounts:
               - name: jenkins-docker-cfg
                 mountPath: /kaniko/.docker
-          - name: alpine
-            image: alpine:latest
+          - name: deployimage
+            image: gcr.io/google-containers/kubectl:latest
             command:
             - cat
             tty: true
@@ -47,9 +47,9 @@ pipeline {
     DOCKER_REPO = "10.16.2.125:8082/repository/dockerrepo"
     IMAGE_NAME = "spring-petclinic"
     TAG = "V${env.BUILD_ID}"
-    OUTPUT_FILE = "pulledimage" 
+    ///OUTPUT_FILE = "pulledimage" 
     PROJECT_ID = "cicd-javaapp"
-    KUBE_NAMESPACE = "app-tst"
+    ///KUBE_NAMESPACE = "app-tst"
   }
   stages {
     stage('Continuous Integration') {
@@ -102,12 +102,9 @@ pipeline {
 
     stage('Continuous Deployment') {
       steps {
-        container('alpine') {
-          sh """
-          curl -u ${NEXUS_USERNAME}:${NEXUS_PASSWORD} ${DOCKER_REPO}:${TAG}  -o ${OUTPUT_FILE} 
-         
-          kubectl set image deployment/${IMAGE_NAME} ${IMAGE_NAME}=gcr.io/${PROJECT_ID}/${IMAGE_NAME}:${TAG} -n ${KUBE_NAMESPACE}
-          """
+        container('deployimage') {
+          sh "kubectl apply -f springdeployment.yaml"
+          
         }
       }
     }  
