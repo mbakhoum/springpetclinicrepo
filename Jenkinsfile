@@ -103,13 +103,10 @@ pipeline {
     stage('Continuous Deployment') {
       steps {
         container('kubectl') { 
-          sleep 9000
-          withCredentials([file(credentialsId: 'jenkinstokengke', variable: 'KUBECONFIG')]) {
-                    sh "echo $KUBECONFIG > /.kube/config"
-                    sh "kubectl get nodes"
+        //sleep 9000
+          sh "kubectl apply -f springdeployment.yaml"
                     }
         }
       }
     }  
   }
-}
