@@ -104,7 +104,7 @@ pipeline {
       steps {
         container('kubectl') { 
         //sleep 9000
-          sh "kubectl apply -f springdeployment.yaml"
+          sh "kubectl apply -f $WORKSPACE/springdeployment.yaml"
                     }
         }
       }
