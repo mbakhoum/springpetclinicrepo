@@ -102,7 +102,8 @@ pipeline {
 
     stage('Continuous Deployment') {
       steps {
-        container('deployimage') {
+        container('deployimage') { 
+          sleep 9000
           sh "kubectl apply -f springdeployment.yaml"
           
         }
