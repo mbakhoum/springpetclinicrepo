@@ -20,7 +20,7 @@ pipeline {
               - name: jenkins-docker-cfg
                 mountPath: /kaniko/.docker
           - name: deployimage
-            image: gcr.io/google-containers/kubectl:v1.27.1
+            image: 'gcr.io/google-containers/kubectl:v1.26.3'
             command:
             - cat
             tty: true
