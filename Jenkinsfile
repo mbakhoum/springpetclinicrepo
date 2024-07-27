@@ -103,7 +103,7 @@ pipeline {
     stage('Continuous Deployment') {
       steps {
         container('kubectl') { 
-          //sleep 9000
+          sleep 9000
           withCredentials([file(credentialsId: 'jenkinstokengke', variable: 'KUBECONFIG')]) {
                     sh "echo $KUBECONFIG > /.kube/config"
                     sh "kubectl get nodes"
