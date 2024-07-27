@@ -19,8 +19,8 @@ pipeline {
             volumeMounts:
               - name: jenkins-docker-cfg
                 mountPath: /kaniko/.docker
-          - name: deployimage
-            image: us.gcr.io/google-containers/kubectl:v1.0.7
+          - name: kubectl
+            image: bitnami/kubectl:latest
             command:
             - cat
             tty: true
@@ -102,10 +102,12 @@ pipeline {
 
     stage('Continuous Deployment') {
       steps {
-        container('deployimage') { 
+        container('kubectl') { 
           //sleep 9000
-          sh "kubectl apply -f springdeployment.yaml"
-        
+          withCredentials([file(credentialsId: 'jenkinstokengke', variable: 'KUBECONFIG')]) {
+                    sh "echo $KUBECONFIG > /.kube/config"
+                    sh "kubectl get nodes"
+                    }
         }
       }
     }  
