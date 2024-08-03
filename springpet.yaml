@@ -1,0 +1,23 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springdeployment
+  namespace: testpipeline
+  labels:
+    app: springpet
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: springpet
+  template:
+    metadata:
+      labels:
+        app: springpet
+    spec:
+      imagePullSecrets:
+        - name: deploysecret
+      containers:
+        - name: springpet
+          image: 10.16.2.159:8082/repository/dockerrepo/spring-petclinic:${BUILD_ID}
