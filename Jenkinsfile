@@ -99,9 +99,9 @@ pipeline {
         }
 
         container('kubectl') { 
-          sleep 9000
+          //sleep 9000
           sh "kubectl apply -f $WORKSPACE/springpet.yaml"
-                    }
+                }
              }
          }
      }  
