@@ -97,16 +97,12 @@ pipeline {
          // sleep 900
           sh "/kaniko/executor --dockerfile $WORKSPACE/dockerfile -c $WORKSPACE/ --insecure --skip-tls-verify --cache=true --destination=${DOCKER_REPO}/${IMAGE_NAME}:${TAG} --force"
         }
-      }
-    }
 
-    stage('Continuous Deployment') {
-      steps {
         container('kubectl') { 
         //sleep 9000
           sh "kubectl apply -f $WORKSPACE/springpet.yaml"
                     }
-        }
-      }
-    }  
+             }
+         }
+     }  
   }
