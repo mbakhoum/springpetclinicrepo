@@ -20,4 +20,4 @@ spec:
         - name: deploysecret
       containers:
         - name: springpet
-          image: 10.16.2.159:8082/repository/dockerrepo/spring-petclinic:${BUILD_ID}
+          image: 10.16.2.159:8082/repository/dockerrepo/spring-petclinic:V${BUILD_ID}
