@@ -58,8 +58,7 @@ pipeline {
         container('maven') {
           sh 'mvn -version'
           sh 'mvn -DskipTests clean install'
-          echo "Now Archiving."
-          archiveArtifacts artifacts: '**/*.jar'
+          
           //Unit test
           sh 'mvn test'
           //Integration Test
@@ -74,6 +73,8 @@ pipeline {
                 }
             }
           
+          echo "Now Archiving."
+          archiveArtifacts artifacts: '**/*.jar'
           echo "Build and SonarQube analysis completed."
 
           //Artifact upload
