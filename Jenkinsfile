@@ -59,6 +59,12 @@ pipeline {
           sh 'mvn -DskipTests clean install'
           echo "Now Archiving."
           archiveArtifacts artifacts: '**/*.jar'
+          //Unit test
+          sh 'mvn test'
+          //Integration Test
+          sh 'mvn verify -DskipUnitTests'
+          //CODE ANALYSIS WITH CHECKSTYLE
+          sh 'mvn checkstyle:checkstyle'
           script {
             pom = readMavenPom file: "pom.xml";
             filesByGlob = findFiles(glob: "target/*.${pom.packaging}"); 
