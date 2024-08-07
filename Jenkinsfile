@@ -64,15 +64,9 @@ pipeline {
           //Integration Test
           sh 'mvn verify -DskipUnitTests'
           //CODE ANALYSIS WITH CHECKSTYLE
-          sh '''
-          mvn checkstyle:checkstyle
-          post {
-                success {
-                    echo 'Generated Analysis Result'
-                }
-            }
-          '''
-          
+          sh 'mvn checkstyle:checkstyle'
+          echo "Generated Analysis Result"
+                    
           //Artifact upload
           script {
             pom = readMavenPom file: "pom.xml";
