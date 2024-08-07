@@ -73,6 +73,8 @@ pipeline {
                     sh "mvn clean verify sonar:sonar -Dsonar.projectKey=springpetclinic -Dsonar.projectName='springpetclinic'"
                 }
             }
+          
+          echo "Build and SonarQube analysis completed."
 
           //Artifact upload
           script {
