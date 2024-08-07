@@ -64,7 +64,16 @@ pipeline {
           //Integration Test
           sh 'mvn verify -DskipUnitTests'
           //CODE ANALYSIS WITH CHECKSTYLE
-          sh 'mvn checkstyle:checkstyle'
+          sh '''
+          mvn checkstyle:checkstyle
+          post {
+                success {
+                    echo 'Generated Analysis Result'
+                }
+            }
+          '''
+          
+          //Artifact upload
           script {
             pom = readMavenPom file: "pom.xml";
             filesByGlob = findFiles(glob: "target/*.${pom.packaging}"); 
