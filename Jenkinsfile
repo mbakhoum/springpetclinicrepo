@@ -50,6 +50,7 @@ pipeline {
     ///OUTPUT_FILE = "pulledimage" 
     PROJECT_ID = "cicd-javaapp"
     ///KUBE_NAMESPACE = "app-tst"
+    scannerHome = tool "mysonarscanner"
   }
   stages {
     stage('Continuous Integration') {
@@ -66,7 +67,20 @@ pipeline {
           //CODE ANALYSIS WITH CHECKSTYLE
           sh 'mvn checkstyle:checkstyle'
           echo "Generated Analysis Result"
-                    
+          //CODE ANALYSIS with SONARQUBE
+          script {
+           withSonarQubeEnv('sonar-pro') {
+                    sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=springpetclinic \
+                   -Dsonar.projectName=springpetclinic \
+                   -Dsonar.projectVersion=1.0 \
+                   -Dsonar.sources=src/ \
+                   -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/ \
+                   -Dsonar.junit.reportsPath=target/surefire-reports/ \
+                   -Dsonar.jacoco.reportsPath=target/jacoco.exec \
+                   -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml'''
+                }
+            }
+
           //Artifact upload
           script {
             pom = readMavenPom file: "pom.xml";
